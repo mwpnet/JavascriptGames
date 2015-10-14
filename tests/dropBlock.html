@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>tests for Drop Block game</title>
+<script src = "../dropBlock.js"></script>
+
+</head>
+<body>
+<p>test1</p><div id="test1"></div>
+<p>test2</p><div id="test2"></div>
+<p>test2</p><div id="test3"></div>
+
+<script>
+console.log(block);
+var g = new playArea(10, 10, [[[[1]]]]);
+console.log("starting test");
+var d=document.getElementById('test1');
+/*if( g.shape() ){
+	d.innerhtml='<span class="pass">test 1 Passed</span>';
+	console.log("passed");
+}
+else {
+	d.innerhtml='<span class="fail">test 1 Failed</span>';
+	console.log("test 1 failed:",g);
+}*/
+d=document.getElementById('test2');
+var b = g.board();
+if( b.length ==10) {
+	d.innerhtml='<span class="pass">Right number of rows; test 2 Passed</span>';
+}
+else {
+	d.innerhtml='<span class="fail">Wrong number of rows; test 2 Failed</span>';
+	console.log("test 2 failed:",b.length);
+}
+d=document.getElementById('test3');
+var t = true;
+for( var i=0; i<10;i++){
+	t &= (b[i].length == 10);
+}
+if( t ) {
+	d.innerhtml='<span class="pass">Right number of columns; test 3 Passed</span>';
+}
+else {
+	d.innerhtml='<span class="fail">Wrong number of columns; test 3 Failed</span>';
+	console.log("test 3 failed:", b[0].length);
+}
+</script></body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Drop Block game</title>
+<script src = "dropBlock.js"></script>
+
+</head>
+<body>
+<canvas id="blockPreview" width="250" height="500" style="border:10px solid #d3d3d3;"></canvas>
+<canvas id="gameCanvas" width="250" height="500" style="border:10px solid #d3d3d3;"></canvas>
+
+<script>
+
+
+var gameCanvas = document.getElementById('gameCanvas');
+var gameContext = gameCanvas.getContext('2d');
+var pa = new playArea(10, 20);
+
+
+var previewCanvas = document.getElementById('blockPreview');
+var previewContext = previewCanvas.getContext('2d');
+var pre = new preview( 10,20 );
+
+for( var i=0; i<7;i++){
+	var index = Math.floor( blockShapes.length*Math.random());
+	pre.push(blockShapes[index]);
+}
+
+
+var game = new drawGame( 250, 500, 10, 20 );
+game.blocks( drawBlock );
+
+game.draw(gameContext,pa.game());
+game.draw(previewContext,pre.board());
+
+
+document.addEventListener("keydown", function(e){
+	if( e.key == 'a'){
+		pa.left(); 
+	}
+	else if( e.key == 's'){
+		pa.down(); 
+	}
+	else if( e.key == 'd'){
+		pa.right(); 
+	}
+	else if( e.key == 'w'){
+		pa.up();
+	}
+	else if( e.key == 'q'){
+		pa.rotateCW();
+	}
+	else if( e.key == 'e'){
+		pa.rotateCCW();
+	}
+
+	game.draw(gameContext,pa.game());
+});
+
+
+function runIt(event){
+	pa.tick(); 
+	game.draw(previewContext,pre.board()); 
+	game.draw(gameContext,pa.game());
+	if(pa.needNextShape()){
+		var index = Math.floor( blockShapes.length*Math.random());
+		pre.push(blockShapes[index]);
+		pa.setNextShape(pre.shift());
+	}
+}
+
+
+setInterval(function(e){runIt(e)},2000);
+runIt();
+
+/* 
+* while(g.payable){
+	 *	 	if( g.needNextShape() ){
+	 * 			g.nextShape(s)
+	 * 		}
+	 * 	( g.left g.right g.down g.up g.rotateCW g.rotateCounterCW )
+	 * 
+	 * 	show g.game()
+	 * }
+	 * 
+	 * everyTimeCount(	g.tick )	
+*/
+</script>
+</body>
+</html>

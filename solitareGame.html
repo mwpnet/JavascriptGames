@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Klondike solitaire</title>
+
+</head>
+<body>
+	<div id="row1">
+	<p>drag target 1
+		<span id="card" draggable="true">line one</span></p>
+	<p>drag target 2</p>
+	</div>
+	<div id="row2">
+	</div>
+	
+	<img src="cards/ace_of_spades.svg">
+		<img src="cards/ace_of_clubs.svg">
+		<img src="cards/2_of_hearts.svg">
+<script>
+	var card = document.getElementById("card");
+	var r1 = document.getElementById("row1");
+	var r2 = document.getElementById("row2");
+
+	function handleDragStart(e) {
+		// Target (this) element is the source node.
+
+		e.dataTransfer.effectAllowed = 'move';
+		e.dataTransfer.setData('text/html', this);
+		console.log(this);
+	}
+
+	function handleDragOverEnter(e) {
+		    if (e.preventDefault) e.preventDefault(); // allows us to drop
+		    return false;
+		  }
+
+	  
+	function handleDrop(e) {
+		// this/e.target is current target element.
+		console.log("here");
+		if (e.preventDefault) e.preventDefault(); 
+		if (e.stopPropagation) {
+			e.stopPropagation(); // Stops some browsers from redirecting.
+		}
+		var ch = e.dataTransfer.getData('text/html');
+		console.log(ch);
+		this.appendChild(ch);
+		return false;
+	}
+
+	card.addEventListener('dragstart', handleDragStart, false);
+	r1.addEventListener('drop', handleDrop, false);
+	r1.addEventListener('dragover',handleDragOverEnter,false);
+	r1.addEventListener('dragenter',handleDragOverEnter,false);
+	r2.addEventListener('drop', handleDrop, false);
+	r2.addEventListener('dragover',handleDragOverEnter,false);
+	r2.addEventListener('dragenter',handleDragOverEnter,false);
+
+	</script>
+
+</body>
+</html>
