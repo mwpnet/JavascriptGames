@@ -1,535 +1,490 @@
-function makeCardDeck() {
-	var suits = [ "Clubs", "Diamonds", "Hearts", "Spades" ];
-	var color = [ "Black", "Red", "Red", "Black" ];
-	var ranks = ["A","2","3","4","5","6","7","8","9","10","JACK","QUEEN","KING"];
+var cardBeingDragged;
+var cardDraggedFrom;
 
-	var por = ["2","3","4","5","6","7","8","9","10","JACK","QUEEN","KING",null];
-	var poc = [ "Red", "Black", "Black", "Red" ];
-	var hr = [null,"A","2","3","4","5","6","7","8","9","10","JACK","QUEEN"];
-	var deck = [];
 
-	for (s = 0; s < suits.length; s++) {
-		var lowerRank = null;
-		for (r = 0; r < ranks.length; r++) {
-			var c = {
-				rank : ranks[r],
-				suit : suits[s],
-				color : color[s],
 
-				placeOnRank : por[r],
-				placeOnColor : poc[s],
-				placeOnHome : hr[r]
+var tableausPiles;
+var foundationPiles;
+var stockPile;
+var wastePile;
+
+var topOfTableausNode;
+var topOfStockNode;
+var topOfWasteNode;
+
+var foundationpileFull={
+		'spade': false,
+		'heart': false,
+		'club': false,
+		'diamond': false
+		};
+
+
+function handlePropogateAndDefault(ev) {
+	if (ev.preventDefault) ev.preventDefault(); 
+	if (ev.stopPropagation)ev.stopPropagation(); // Stops some browsers from redirecting.
+	return false;
+}
+
+
+
+var slots = ["foundation","tableau","stock","waste"];
+function isEmptySlot(cardNode){
+	for( i=0; i< slots.length;i++){
+		if( cardNode.classList.contains(slots[i])){
+			return true;
+		}
+	}
+	return false;
+}
+/******
+ * get the suit of a card
+ * @param cardNode
+ * 		the element node representing the card
+ * @returns 
+ * 		the suit of the card or null if it doesn't have one.
+ */
+var suit = ['spade','heart','club','diamond'];
+function getSuit(cardNode){
+	for( i=0; i< suit.length;i++){
+		if( cardNode.classList.contains(suit[i])){
+			return suit[i];
+		}
+	}
+	return null;
+}
+
+/*****
+ * get the rank of a card
+ * @param cardNode
+ * 		the element node representing the card
+ * @returns
+ * 		the rank of the card or null if it doesn't have one.
+ */
+var rank = ["king","queen","jack","ten","nine","eight","seven","six","five","four","three","two","ace"];
+function getRank(cardNode){
+	for( i=0; i< rank.length;i++){
+		if( cardNode.classList.contains(rank[i])){
+			return rank[i];
+		}
+	}
+	return null;
+}
+
+/****
+ * compiles a 
+ * @param evInfo
+ * @returns {___anonymous1213_1293}
+ */
+function getCard(cardNode){
+	var card = {
+			node: cardNode,
+			isEmptySlot: isEmptySlot(cardNode),
+			suit: null,
+			rank: null,
+			color: null
+	}
+
+	card.suit = getSuit(cardNode);
+	if( card.suit == null){
+		return card;
+	}
+
+	if( card.suit == "spade" || card.suit == "club"){
+		card.color = "black";
+	}
+	else{
+		card.color = "red";
+	}
+	
+	card.rank = getRank(cardNode);
+	
+	return card;
+}
+
+function flipCardFaceUp(cardNode){
+	var cardFace = cardNode.getElementsByClassName("cardFace");
+	cardFace[0].style.visibility = "visible";
+}
+
+function flipCardFaceDown(cardNode){
+	var cardFace = cardNode.getElementsByClassName("cardFace");
+	cardFace[0].style.visibility = "hidden";
+}
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+//deck game rules
+
+function moveFromDeck(card){
+	flipCardFaceDown(card.node);
+
+	card.node.parentNode.removeChild(card.node);
+}
+
+function moveToDeck(card,ontoDeck){
+	flipCardFaceDown(card.node);
+	ontoDeck.node.appendChild(card.node);
+}
+
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// tableau game rules
+var tableauStackAceptableRank={king:"queen",queen:"jack",jack:"ten",ten:"nine",nine:"eight",eight:"seven",seven:"six",six:"five",five:"four",four:"three",three:"two",two:"ace"}
+
+function startCardDragFromTableau(ev) {
+	// Target (this) element is the source node.
+	ev.dataTransfer.setData('text/plain', 'dummy');
+	ev.dataTransfer.effectAllowed = 'move';
+	cardBeingDragged = ev.target;
+	cardDraggedFrom = "tableau";
+	return false;
+}
+
+function tableauCardAcceptDrop(ev){
+	// e.currentTarget if the element that has the event listener
+	// e.target is element that was dropped onto (not always the same thing)
+	var card = getCard(cardBeingDragged);
+	
+	var ontoCard = getCard(ev.currentTarget);
+
+	if( ontoCard.isEmptySlot ) {
+		// on empty tableau
+		if( card.rank != "king"){
+			return false;
+		}
+	}
+	else{
+		if( card.color== ontoCard.color ){
+			return false;
+		}
+		
+		if( card.rank != tableauStackAceptableRank[ontoCard.rank]){
+			return false;
+		}
+	}
+
+	if( cardDraggedFrom=="tableau"){
+		//card parent - make visible
+		moveFromTableau(card);
+	}
+	else if( cardDraggedFrom=="waste"){
+		moveFromWaste(card);
+	}
+
+	moveToTableau(card, ontoCard);
+	ontoCard.node.appendChild(card.node);
+	ontoCard.node.removeEventListener('drop',tableauCardAcceptDrop);
+	return false;
+}
+
+function moveFromTableau(card){
+	// the card underneath now accepts drops again.
+	card.node.parentNode.addEventListener('drop',tableauCardAcceptDrop,false);
+	card.node.parentNode.addEventListener('dragstart', startCardDragFromTableau, false);
+	flipCardFaceUp(card.node.parentNode);
+
+	card.node.parentNode.removeChild(card.node);
+	topOfTableausNode = card.node.parentNode;
+
+	card.node.removeEventListener('drop',tableauCardAcceptDrop);
+	card.node.removeEventListener('dragstart', startCardDragFromTableau);
+}
+
+function moveToTableau(card,ontoCard){
+	// the card underneath no longer accepts drops
+	ontoCard.node.appendChild(card.node);
+	ontoCard.node.removeEventListener('drop',tableauCardAcceptDrop);
+	
+	topOfTableausNode=card.node;
+	card.node.addEventListener('drop',tableauCardAcceptDrop,false);
+	card.node.addEventListener('dragstart', startCardDragFromTableau, false);
+}
+
+
+
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+//foundation game rules
+var foundationStackRank={queen:"king",jack:"queen",ten:"jack",nine:"ten",eight:"nine",seven:"eight",six:"seven",five:"six",four:"five",three:"four",two:"three",ace:"two"}
+
+function foundationCardAcceptDrop(ev){
+	// e.currentTarget if the element that has the event listener
+	// e.target is element that was dropped onto (not always the same thing)
+	
+	var card = getCard(cardBeingDragged);
+	
+	var coveringCards = card.node.getElementsByClassName("card");
+	
+	var ontoCard = getCard(ev.currentTarget);
+
+	if( coveringCards.length !=0){
+		return false;
+	}
+	
+	var ontoCard = getCard(ev.currentTarget);
+
+	if( card.suit != ontoCard.suit ){
+		return false;
+	}
+	
+	if( ontoCard.isEmptySlot) {
+		// on empty foundation
+		if( card.rank != "ace"){
+			return false;
+		}
+	}
+	else{
+		if( card.rank != foundationStackRank[ontoCard.rank]){
+			return false;
+		}
+	}
+	
+	if( cardDraggedFrom=="tableau"){
+		//card parent - make visible
+		moveFromTableau(card);
+	}
+	else if( cardDraggedFrom=="waste"){
+		moveFromWaste(card);
+	}
+	moveToFoundation(card,ontoCard);
+	
+	if(card.rank == "king"){
+		foundationpileFull[card.suit]=true;
+		checkForWin();
+	}
+	return false;
+}
+
+function moveToFoundation(card,ontoCard){
+	ontoCard.node.appendChild(card.node);
+	ontoCard.node.removeEventListener('drop',foundationCardAcceptDrop);
+	card.node.addEventListener('drop',foundationCardAcceptDrop);
+	
+}
+
+
+function checkForWin(){
+	var win=true;
+	
+	for( i=0; i< suit.length;i++){
+		win = win&& foundationpileFull[suit[i]];
+	}
+	if( win){
+		var winbox = document.getElementById("winAnnouncement");
+		winbox.style.visibility = "visible";
+	}
+}
+
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// stock game rules
+
+function clickOnStock(ev){
+	// e.currentTarget is the element that has the event listener
+	// e.target is element that was dropped onto (not always the same thing)
+	var card = getCard(ev.currentTarget);
+	
+	if( card.isEmptySlot) {
+		//empty stock
+		refillStock();
+		return false;
+	}
+
+	moveFromStock(card);
+	moveToWaste(card);
+	//need to stop propogating the click up the doc tree
+	// since the parent has the event listener at this point,
+	// which would then be called for the  same event
+	if (ev.stopPropagation)ev.stopPropagation();
+
+}
+
+function moveToStock(card,ontoCard){
+	ontoCard.node.addEventListener('click',clickOnStock);
+	ontoCard.node.appendChild(card.node);
+
+	card.node.addEventListener('click',clickOnStock);
+	topOfStockNode = card.node;
+	flipCardFaceDown(topOfStockNode);
+}
+
+function moveFromStock(card){
+	card.node.removeEventListener('click',clickOnStock);
+	
+	topOfStockNode = card.node.parentNode;
+	card.node.parentNode.addEventListener('click',clickOnStock);
+	card.node.parentNode.removeChild(card.node);
+}
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// waste game rules
+
+function startCardDragFromWaste(ev) {
+	ev.dataTransfer.setData('text/plain', 'dummy');
+	ev.dataTransfer.effectAllowed = 'move';
+	cardBeingDragged = ev.target;
+	cardDraggedFrom = "waste";
+	return false;
+}
+
+function moveToWaste(card){
+	topOfWasteNode.appendChild(card.node);
+	topOfWasteNode.removeEventListener('dragstart',startCardDragFromWaste);
+
+	topOfWasteNode= card.node;
+
+	card.node.addEventListener('dragstart', startCardDragFromWaste);
+	flipCardFaceUp(card.node);
+
+}
+
+function moveFromWaste(card){
+	topOfWasteNode= card.node.parentNode;
+	card.node.parentNode.addEventListener('dragstart', startCardDragFromWaste);
+	card.node.parentNode.removeChild(card.node);
+
+
+	card.node.removeEventListener('dragstart',startCardDragFromWaste);
+}
+
+function refillStock(){
+	var topWaste = getCard(topOfWasteNode);
+	var topStock = getCard(topOfStockNode);
+	
+	while( ! topWaste.isEmptySlot ){
+		moveFromWaste(topWaste);
+		moveToStock(topWaste, topStock);
+
+		topWaste = getCard(topOfWasteNode);
+		topStock = getCard(topOfStockNode);
+	}
+}
+
+//////////////////////////////////
+//////////////////////////////////
+
+function newGame(){
+	setupGlobals();
+	
+	setupPropogateAndDefaultHandeling();
+	setupCardDragAndDrop();	
+	
+	var winbox = document.getElementById("winAnnouncement");
+	winbox.style.visibility = "hidden";
+
+	
+	collectCards();
+	dealCards();
+}
+
+
+function setupGlobals(){
+	tableausPiles = document.getElementsByClassName("tableau");
+	foundationPiles = document.getElementsByClassName("foundation");
+	stockPile = document.getElementById("stock");
+	wastePile = document.getElementById("waste");
+	
+	topOfTableausNode = tableausPiles;
+	topOfStockNode = stockPile;
+	topOfWasteNode = wastePile;
+	
+	var foundationpileFull={
+			'spade': false,
+			'heart': false,
+			'club': false,
+			'diamond': false
 			};
-			lowerRank = r;
-			deck.push(c);
-		}
-	}
-	return deck;
 }
 
-cardPile = function(maxStartCards) {
-	this.cards = [];
-	this.numShown = 1;
-
-	this.maxBuild=maxStartCards;
+function setupPropogateAndDefaultHandeling(){
+	var cards = document.getElementsByClassName("card");
+	setupEventListeners(cards);
 	
-	// utility functions
-	this.canPlace=function(card){
-		
-		if (Array.isArray(card)) {
-			card = card[-1];
-		}
-		
-		if (card.rank = "K" && this.cards.length == 0) { // moving king
-				// onto empty
-				// pile
-			return true;
-		}
-		if (card.placeOnRank == this.top().rank
-				&& card.placeOnColor == this.top().color) { // base of
-																	// cards to
-																	// be moved
-																	// can be
-																	// placed on
-																	// top of
-																	// pile.
-			return true;
-		}
-		return false;
-	}
-	this.place = function(card) {
-		if( !this.canPlace(card) ){
-			return 0;
-		}
-		if (Array.isArray(card)) {
-			this.cards.splice(0, 0, card);
-			this.shown+=card.length;
-			return card.length;
-		}
+	setupEventListeners(tableausPiles);
+	setupEventListeners(foundationPiles);
+}
 
-		this.cards.unshift(card);
-		this.shown++;
-		return 1;
-	}
-
-	this.canRemove = function(n){
-		if (this.cards.length = 0) { // if there are no cards
-			return false;
-		}
-		if( n>this.shown){ // if trying to move more than are showing
-			return false;
-		}
-		return true;
-	}
-	this.remove = function(n) {
-		if(!this.canRemove(n)){
-			return [];
-		}
-		if( n==1){ // remove top card and flip over next one.
-			return this.cards.shift();
-		}
-		else { // remove top n cards. If non showing, flip over next card
-			this.shown -=n;
-			if( this.shown <1){
-				this.shown=1;
-			}
-			return this.cards.splice(0, n );
-		}
-	}
-
-	this.top == function() {
-		return this.cards[0];
-	}
-
-	// playing functions
-	this.canMove = function(n, pile) {
-		if(!this.canRemove(n)){
-			return false;
-		}
-
-		var index = n-1;
-		var cardsToMove = this.cards.slice(0,index);
-
-		if( !pile.canPlace(cardsToMove)){
-			return false;
-		}
-
-		return true;
-	}
-
-	this.moveTo = function(n, pile) {
-		if (!this.canMove(n, pile)) {
-			return false;
-		}
-
-		pile.place(this.remove(n));
-		return true;
-	}
-
-	// building functions
-	this.fullStartPile(){
-		return this.card.length = this.maxBuild && this.shown==1;
-	}
-	
-	this.canUnPlace = function(n){
-		if(n > this.shown-1){
-			return false;
-		}
-		return true;
-	}
-	this.unPlace = function(n){
-		if( !this.canUnPlace(n)){
-			return [];
-		}
-		this.shown -=n;
-		return this.cards.splice(0,n);
-	}
-
-	this.numUnPlaceable(){
-		return this.shown-1;
-	}
-	
-	this.canUnRemove = function(card){
-		
-		if (!Array.isArray(card)) {
-			card = [card];
-		}
-		if( card[-1].placeOnRank == pile.top().rank
-				&& card[-1].placeOnColor == pile.top().color){ // if following
-																// run, just
-																// place
-			return true;
-		}
-		if(this.cards.length == this.maxBuild && this.shown==1 ){ // if full
-																	// can't
-																	// flip down
-																	// anymore
-			return false;
-		}
-		return true;
-	}
-
-	this.unRemove = function(card){
-		if( !this.canUnRemove(card)){
-			return 0;
-		}
-		
-		if (!Array.isArray(card)) {
-			card = [card];
-		}
-
-		this.cards.splice(0,cards.length,cards); // add cards to the pile
-		
-		if( card[-1].placeOnRank == pile.top().rank
-				&& card[-1].placeOnColor == pile.top().color){ // if following
-																// run, just
-																// place
-			this.shown+=card.length;
-		}
-		else { // otherwise flip down card under new cards
-			this.shown = card.length;
-		}
-		return cards.length;
-	}
-	
-	this.numUnRemovable(){
-		if(this.cards.length == this.maxBuild && this.shown==1 ){ // if full
-			// can't
-			// flip down
-			// anymore
-			return 0;
-		}
-		return 1;
+function setupEventListeners(collection){
+	for( i=0; i< collection.length;i++){
+		collection[i].addEventListener('dragover', handlePropogateAndDefault, false);
+		collection[i].addEventListener('dragenter', handlePropogateAndDefault, false);
+		collection[i].addEventListener('drop', handlePropogateAndDefault, false);
 	}
 	
 }
 
-
-homePile = function(maxStartCards) { // maxStartCards ignored
-	this.cards = [];
-
-	this.maxBuild=0;
-	
-	// utility functions
-	this.canPlace=function(card){
-		
-		if (Array.isArray(card)) {
-			return false;
-		}
-		
-		if (card.placeOnHome = "A" && this.cards.length == 0) { // moving Ace Home
-			return true;
-		}
-		if (cardToPlace.placeOnRank == this.top().rank
-				&& cardToPlace.color == this.top().color) { // card is next in home pile
-			return true;
-		}
-		return false;
-	}
-	this.place = function(card) {
-		if( !this.canPlace(card) ){
-			return 0;
-		}
-
-		this.cards.unshift(card);
-		return 1;
-	}
-
-	this.canRemove = function(n){
-		return false;
-	}
-	this.remove = function(n) {
-			return [];
-	}
-
-	this.top == function() {
-		return this.cards[0];
-	}
-
-	// playing functions
-	this.canMove = function(n, pile) {
-		return false;
-	}
-
-	this.moveTo = function(n, pile) {
-		return false;
-	}
-
-	// building functions
-	this.fullStartPile(){
-		return this.cards.length==0;
+// setup card dragging
+function setupCardDragAndDrop(){
+	for( i=0; i< tableausPiles.length;i++){
+		tableausPiles[i].addEventListener('drop', tableauCardAcceptDrop, false);
 	}
 	
-	this.canUnPlace = function(n){
-		return this.cards.length>0;
+	for( i=0; i< foundationPiles.length;i++){
+		foundationPiles[i].addEventListener('drop', foundationCardAcceptDrop, false);
 	}
-	this.unPlace = function(n){
-		if( !this.canUnPlace(n)){
-			return [];
-		}
-		return this.cards.splice(0,n);
-	}
-	this.numUnPlaceable(){
-		return 1;
-	}
-	
-
-	this.canUnRemove = function(card){
-		return false;
-	}
-
-	this.unRemove = function(card){
-		return 0;
-	}
-	this.numUnRemovable(){
-		return 0;
-	}
-
 }
 
-cardReserve = function(maxStartCards) {
-	this.unflipped=[];
-	this.cards = [];
-
-	this.maxBuild= maxStartCards; 
+function collectCards(){
+	var deckNode = document.getElementById("deck");
 	
-	// utility functions
-	this.canPlace=function(card){
-		return false;
-	}
-	this.place = function(card) {
-		return 0;
-	}
-
-	this.canRemove = function(n){
-		if (this.cards.length = 0) { // if there are no cards
-			return false;
-		}
-		if( n>1){ // can only remove one at a time
-			return false;
-		}
-		return true;
-	}
-	this.remove = function(n) {
-		if(!this.canRemove(n)){
-			return [];
-		}
-		
-		// remove top card.
-		return this.cards.shift();
-	}
-
-	this.flip(){ // flip three manually;
-		if( this.unflipped.length ==0){ // if non unflipped, reset pile
-			this.unflipped = this.cards;
-			this.cards=[];
-			return;
-		}
-
-		var numCardsToShift = 3;
-		if( this.unflipped.length<3){
-			numCardsToShift = this.unflipped.length
-		}
-		var shiftedCards= this.cards.splice(this.unflipped-numCardsToShift,numCardsToShift);
-		this.cards.splice(0,0,shiftedCards);
-	}
+	var cardNodes = document.getElementsByClassName("card");
 	
-	this.top == function() {
-		return this.cards[0];
+	// since cardNodes is a live collection, it acts oddly when removing 
+	// and adding card nodes to other nodes. So we have to make a static copy 
+	// of the nodes here.
+	var staticCardNodes = [];
+	for( i=0; i< cardNodes.length;i++){
+		staticCardNodes.push(cardNodes[i]);
 	}
 
-	// playing functions
-	this.canMove = function(n, pile) {
-		if(!this.canRemove(n)){
-			return false;
-		}
+	for( i=0; i< staticCardNodes.length;i++){
+		staticCardNodes[i].removeEventListener('drop',tableauCardAcceptDrop);
+		staticCardNodes[i].removeEventListener('drop',foundationCardAcceptDrop);
+		staticCardNodes[i].removeEventListener('dragstart', startCardDragFromTableau);
+		staticCardNodes[i].removeEventListener('dragstart',startCardDragFromWaste);
+		staticCardNodes[i].removeEventListener('click',clickOnStock);
 
-		if( !pile.canPlace(this.cards[0])){
-			return false;
-		}
-
-		return true;
+		staticCardNodes[i].parentNode.removeChild(staticCardNodes[i]);
+		deckNode.appendChild(staticCardNodes[i]);
+		flipCardFaceDown(staticCardNodes[i]);
 	}
-
-	this.moveTo = function(n, pile) {
-		if (!this.canMove(n, pile)) {
-			return false;
-		}
-
-		pile.place(this.remove(n));
-		return true;
-	}
-
-	// building functions
-	this.fullStartPile(){
-		return this.card.length = this.maxBuild && this.shown==1;
-	}
-	
-	this.canUnPlace = function(n){
-		return false;
-	}
-	this.unPlace = function(n){
-		return [];
-	}
-	this.numUnPlaceable(){
-		return 0;
-	}
-
-	this.numUnPlaceable(){
-		return 0;
-	}
-	
-	this.canUnRemove = function(card){
-		
-		if (Array.isArray(card)) { // can only unremove one card
-			return false; 
-		}
-		if(this.unflipped.length+this.cards.length >= this.maxBuild){
-			return false;
-		}
-		return true;
-	}
-
-	this.unRemove = function(card){
-		if( !this.canUnRemove(card)){
-			return 0;
-		}
-		
-		this.cards.unshift(card); // add cards to the pile
-		if( this.cards.length==3){
-			this.unflipped.push(this.cards);
-			this.cards=[];
-		}
-		
-		return cards.length;
-	}
-	
-	this.numUnRemovable(){
-		if(this.unflipped.length+this.cards.length >= this.maxBuild){
-			return 0;
-		}
-
-		return 1;
-	}
-
-	
 }
 
+function dealCards(){
+	var deck = document.getElementById("deck");
+	var cards = deck.children;
 
-var game = function(){
-	this.home = [
-	            new cardHome(0),
-	            new cardHome(0),
-	            new cardHome(0),
-	            new cardHome(0)
-	            ];
-	
-	this.pile = [];
-	for(var n=1; n<=7;n++){
-		this.pile.push( new cardPile(n));		
-	}
-	
-	this.reserve = new cardReserve( 52-7*8/2); // leftover cards from 7 piles
-	
-	this.setup = function(){
-		
-		// fill up home row
-		var workingReserve = new cardReserve( 52);
-		workingReserve.cards=makeCardDeck();
-		
-		while( workingReserve.canMove(1)){
-			if( workingReserve.moveTo(this.home[0])) {continue;}
-			if( workingReserve.moveTo(this.home[1])) {continue;}
-			if( workingReserve.moveTo(this.home[2])) {continue;}
-			if( workingReserve.moveTo(this.home[3])) {continue;}
-			break; // should never get here
-		}
-		
-		while( this.home[0].canMove(1) || this.home[1].canMove(1)||this.home[2].canMove(1)||this.home[3].canMove(1)){
-			this.setupStep();
-		}
-	}
-	
-	this.setupStep(){
-		var unPlacePile = this.getUnPlaceable;
-		var unRemovePile = this.getUnRemovable;
-		
-		if( unPlacePile.numUnPlaceable() == 1){
-			unRemovePile.unRemove(unPlacePile.unPlace(1));
-			return;
-		}
-		
-		
-		var pickCardNum = Math.Floor(unPlacePile.numUnPlaceable() *Math.Rand()+1);
-		var cardsToUnMove = unPlacePile.unPlace(pickCardNum);
-		unRemovePile.unRemove(cardsToUnMove);	
-	}
-	
-	this.getUnPlaceable(){
-		var totalUnPlayable=0;
-		
-		for( var i=0; i<this.home.length;i++){
-			totalUnPlayable+=this.home[i].numUnPlaceable();
-		}
-		for( var i=0; i<this.pile.length;i++){
-			totalUnPlayable+=this.pile[i].numUnPlaceable();
-		}
-		totalUnPlayable+=this.reserve.numUnPlaceable();
-		
-		var pileNum = totalUnPlayable *Math.Rand();
+	for( tabNum = 0; tabNum < tableausPiles.length; tabNum++){
+		var numCards = tabNum+1;
+		var ontoCard = getCard(tableausPiles[tabNum]);
+		for( dealCard = 1; dealCard <= numCards; dealCard++){
+			randomIndex = Math.floor(Math.random()* cards.length);
+			var card = getCard( cards[randomIndex] );
 
-		var checkRand = 0;
-		for( var i=0; i<this.home.length;i++){
-			checkRand+=this.home[i].numUnPlaceable();
-			if( checkRand>pileNum){
-				return home[i];
-			}
+			moveFromDeck(card);
+			moveToTableau(card,ontoCard);
+			ontoCard = card;
 		}
-		for( var i=0; i<this.pile.length;i++){
-			checkRand+=this.pile[i].numUnPlaceable();
-			if( checkRand>pileNum){
-				return pile[i];
-			}
-		}
-		checkRand+=this.reserve.numUnPlaceable();
-		if( checkRand>pileNum){
-			return reserve;
-		}
-
+		flipCardFaceUp(ontoCard.node); // top card now
 	}
+
+	var ontoCard = getCard(document.getElementById("stock"));
 	
-	this.getUnRemovable(){
-		var totalUnRemovable=0;
-		
-		for( var i=0; i<this.home.length;i++){
-			totalUnRemovable+=this.home[i].numUnRemovable();
-		}
-		for( var i=0; i<this.pile.length;i++){
-			totalUnRemovable+=this.pile[i].numUnRemovable();
-		}
-		totalUnRemovable+=this.reserve.numUnRemovable();
-		
-		var pileNum = totalUnRemovable *Math.Rand();
+	while( cards.length >0){
+		randomIndex = Math.floor(Math.random()* cards.length);
+		var card = getCard(cards[randomIndex]);
 
-		var checkRand = 0;
-		for( var i=0; i<this.home.length;i++){
-			checkRand+=this.home[i].numUnRemovable();
-			if( checkRand>pileNum){
-				return home[i];
-			}
-		}
-		for( var i=0; i<this.pile.length;i++){
-			checkRand+=this.pile[i].numUnRemovable();
-			if( checkRand>pileNum){
-				return pile[i];
-			}
-		}
-		checkRand+=this.reserve.numUnRemovable();
-		if( checkRand>pileNum){
-			return reserve;
-		}
-
+		moveFromDeck(card);
+		moveToStock(card,ontoCard);
+		ontoCard = card;
 	}
-	
-	
+	ontoCard.node.addEventListener('click',clickOnStock);
+
+	topOfWasteNode = document.getElementById("waste");
 }
+

@@ -3,60 +3,1294 @@
 <head>
 <meta charset="utf-8" />
 <title>Klondike solitaire</title>
-
+<script src="solitareGame.js"></script>
+<link href="solitareGame.css" type="text/css" rel="stylesheet" />
 </head>
-<body>
-	<div id="row1">
-	<p>drag target 1
-		<span id="card" draggable="true">line one</span></p>
-	<p>drag target 2</p>
+
+<body class="table">
+
+	<div id="deck">
+		<div id="aceOfSpade" draggable="true" class="card ace of spade">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						A<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">&#9824;</span>
+					</div>
+					<div class="bottomCorner">
+						A<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="twoOfSpade" draggable="true" class="card two of spade">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						2<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9824;<br> <br> <br> <br> <br>
+							<br> &#9824;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						2<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="threeOfSpade" draggable="true" class="card spade three of">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						3<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9824;<br> <br> <br> &#9824;<br> <br>
+							<br> &#9824;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						3<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="fourOfSpade" draggable="true" class="card four of spade">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						4<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9824; &#9824;<br> <br> <br> <br>
+							<br> <br> &#9824; &#9824;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						4<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="fiveOfSpade" draggable="true" class="card five of spade">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						5<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9824; &#9824;<br> <br> <br> &#9824;<br>
+							<br> <br> &#9824; &#9824;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						5<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="sixOfSpade" draggable="true" class="card six of spade">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						6<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9824; &#9824;<br> <br> <br> &#9824;
+							&#9824;<br> <br> <br> &#9824; &#9824;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						6<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="sevenOfSpade" draggable="true" class="card seven of spade">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						7<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9824; &#9824;<br> <br> &#9824;<br>
+							&#9824; &#9824;<br> <br> <br> &#9824; &#9824;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						7<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="eightOfSpade" draggable="true" class="card eight of spade">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						8<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9824; &#9824;<br> <br> &#9824; &#9824;<br>
+							<br> &#9824; &#9824;<br> <br> &#9824; &#9824;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						8<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="nineOfSpade" draggable="true" class="card nine of spade">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						9<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9824; &#9824;<br> <br> &#9824; &#9824;<br>
+							&#9824;<br> &#9824; &#9824;<br> <br> &#9824;
+							&#9824;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						9<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="tenOfSpade" draggable="true" class="card ten of spade">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						10<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9824; &#9824;<br> &#9824;<br> &#9824;
+							&#9824;<br> <br> &#9824; &#9824;<br> &#9824;<br>
+							&#9824; &#9824;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						10<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="jackOfSpade" draggable="true" class="card jack of spade">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						J<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">J</span>
+					</div>
+					<div class="bottomCorner">
+						J<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="queenOfSpade" draggable="true" class="card queen of spade">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						Q<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">Q</span>
+					</div>
+					<div class="bottomCorner">
+						Q<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="kingOfSpade" draggable="true" class="card king of spade">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						K<br>&#9824;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">K</span>
+					</div>
+					<div class="bottomCorner">
+						K<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="aceOfHeart" draggable="true" class="card ace of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						A<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> <br> <br> <br> &#9829;<br> <br>
+							<br> <br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						A<br>&#9829;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="twoOfHeart" draggable="true" class="card two of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						2<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9829;<br> <br> <br> <br> <br>
+							<br> &#9829;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						2<br>&#9829;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="threeOfHeart" draggable="true" class="card three of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						3<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9829;<br> <br> <br> &#9829;<br> <br>
+							<br> &#9829;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						3<br>&#9829;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="fourOfHeart" draggable="true" class="card four of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						4<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9829; &#9829;<br> <br> <br> <br>
+							<br> <br> &#9829; &#9829;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						4<br>&#9829;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="fiveOfHeart" draggable="true" class="card five of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						5<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9829; &#9829;<br> <br> <br> &#9829;<br>
+							<br> <br> &#9829; &#9829;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						5<br>&#9829;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="sixOfHeart" draggable="true" class="card six of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						6<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9829; &#9829;<br> <br> <br> &#9829;
+							&#9829;<br> <br> <br> &#9829; &#9829;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						6<br>&#9824;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="sevenOfHeart" draggable="true" class="card seven of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						7<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9829; &#9829;<br> <br> &#9829;<br>
+							&#9829; &#9829;<br> <br> <br> &#9829; &#9829;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						7<br>&#9829;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="eightOfHeart" draggable="true" class="card eight of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						8<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9829; &#9829;<br> <br> &#9829; &#9829;<br>
+							<br> &#9829; &#9829;<br> <br> &#9829; &#9829;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						8<br>&#9829;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="nineOfHeart" draggable="true" class="card nine of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						9<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9829; &#9829;<br> <br> &#9829; &#9829;<br>
+							&#9829;<br> &#9829; &#9829;<br> <br> &#9829;
+							&#9829;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						9<br>&#9829;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="tenOfHeart" draggable="true" class="card ten of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						10<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9829; &#9829;<br> &#9829;<br> &#9829;
+							&#9829;<br> <br> &#9829; &#9829;<br> &#9829;<br>
+							&#9829; &#9829;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						10<br>&#9829;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="jackOfHeart" draggable="true" class="card jack of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						J<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">J</span>
+					</div>
+					<div class="bottomCorner">
+						J<br>&#9829;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="queenOfHeart" draggable="true" class="card queen of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						Q<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">Q</span>
+					</div>
+					<div class="bottomCorner">
+						Q<br>&#9829;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="kingOfHeart" draggable="true" class="card king of heart">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						K<br>&#9829;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">K</span>
+					</div>
+					<div class="bottomCorner">
+						K<br>&#9829;
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="aceOfClub" draggable="true" class="card ace of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						A<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> <br> <br> <br> &#9827;<br> <br>
+							<br> <br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						A<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="twoOfClub" draggable="true" class="card two of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						2<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9827;<br> <br> <br> <br> <br>
+							<br> &#9827;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						2<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="threeOfClub" draggable="true" class="card three of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						3<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9827;<br> <br> <br> &#9827;<br> <br>
+							<br> &#9827;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						3<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="fourOfClub" draggable="true" class="card four of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						4<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9827; &#9827;<br> <br> <br> <br>
+							<br> <br> &#9827; &#9827;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						4<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="fiveOfClub" draggable="true" class="card five of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						5<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9827; &#9827;<br> <br> <br> &#9827;<br>
+							<br> <br> &#9827; &#9827;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						5<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="sixOfClub" draggable="true" class="card six of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						6<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9827; &#9827;<br> <br> <br> &#9827;
+							&#9827;<br> <br> <br> &#9827; &#9827;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						6<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="sevenOfClub" draggable="true" class="card seven of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						7<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9827; &#9827;<br> <br> &#9827;<br>
+							&#9827; &#9827;<br> <br> <br> &#9827; &#9827;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						7<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="eightOfClub" draggable="true" class="card eight of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						8<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9827; &#9827;<br> <br> &#9827; &#9827;<br>
+							<br> &#9827; &#9827;<br> <br> &#9827; &#9827;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						8<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="nineOfClub" draggable="true" class="card nine of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						9<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9827; &#9827;<br> <br> &#9827; &#9827;<br>
+							&#9827;<br> &#9827; &#9827;<br> <br> &#9827;
+							&#9827;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						9<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="tenOfClub" draggable="true" class="card ten of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						10<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9827; &#9827;<br> &#9827;<br> &#9827;
+							&#9827;<br> <br> &#9827; &#9827;<br> &#9827;<br>
+							&#9827; &#9827;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						10<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="jackOfClub" draggable="true" class="card jack of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						J<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">J</span>
+					</div>
+					<div class="bottomCorner">
+						J<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="queenOfClub" draggable="true" class="card queen of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						Q<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">Q</span>
+					</div>
+					<div class="bottomCorner">
+						Q<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="kingOfClub" draggable="true" class="card king of club">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						K<br>&#9827;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">K</span>
+					</div>
+					<div class="bottomCorner">
+						K<br>&#9827;
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="aceOfDiamond" draggable="true" class="card ace of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						A<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> <br> <br> <br> &#9830;<br> <br>
+							<br> <br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						A<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="twoOfDiamond" draggable="true" class="card two of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						2<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9830;<br> <br> <br> <br> <br>
+							<br> &#9830;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						2<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="threeOfDiamond" draggable="true"
+			class="card three of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						3<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9830;<br> <br> <br> &#9830;<br> <br>
+							<br> &#9830;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						3<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="fourOfDiamond" draggable="true" class="card four of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						4<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9830; &#9830;<br> <br> <br> <br>
+							<br> <br> &#9830; &#9830;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						4<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="fiveOfDiamond" draggable="true" class="card five of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						5<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9830; &#9830;<br> <br> <br> &#9830;<br>
+							<br> <br> &#9830; &#9830;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						5<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="sixOfDiamond" draggable="true" class="card six of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						6<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9830; &#9830;<br> <br> <br> &#9830;
+							&#9830;<br> <br> <br> &#9830; &#9830;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						6<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="sevenOfDiamond" draggable="true"
+			class="card seven of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						7<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9830; &#9830;<br> <br> &#9830;<br>
+							&#9830; &#9830;<br> <br> <br> &#9830; &#9830;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						7<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="eightOfDiamond" draggable="true"
+			class="card eight of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						8<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9830; &#9830;<br> <br> &#9830; &#9830;<br>
+							<br> &#9830; &#9830;<br> <br> &#9830; &#9830;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						8<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="nineOfDiamond" draggable="true" class="card nine of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						9<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9830; &#9830;<br> <br> &#9830; &#9830;<br>
+							&#9830;<br> &#9830; &#9830;<br> <br> &#9830;
+							&#9830;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						9<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="tenOfDiamond" draggable="true" class="card ten of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						10<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<div class="pips">
+							<br> &#9830; &#9830;<br> &#9830;<br> &#9830;
+							&#9830;<br> <br> &#9830; &#9830;<br> &#9830;<br>
+							&#9830; &#9830;<br>
+						</div>
+					</div>
+					<div class="bottomCorner">
+						10<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="jackOfDiamond" draggable="true" class="card jack of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						J<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">J</span>
+					</div>
+					<div class="bottomCorner">
+						J<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="queenOfDiamond" draggable="true"
+			class="card queen of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						Q<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">Q</span>
+					</div>
+					<div class="bottomCorner">
+						Q<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="kingOfDiamond" draggable="true" class="card king of diamond">
+			<div class="apsectKepperDummy">
+				<div class="cardBack">
+					<div class="cardBackCenter">
+						<span class="cardBackCenterSymble">&#x2766;</span>
+					</div>
+				</div>
+				<div class="cardFace">
+					<div class="topCorner">
+						K<br>&#9830;
+					</div>
+					<div class="cardMarks">
+						<span class="faceCardFace">K</span>
+					</div>
+					<div class="bottomCorner">
+						K<br>&#9830;
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div id="row2">
+
+
+	<button onclick="newGame()">New Game</button>
+	<div id="foundationRow" class="gameRow">
+		<div id="stock" class="stock">
+			<div class="apsectKepperDummy"></div>
+		</div>
+		<div id="waste" class="waste">
+			<div class="apsectKepperDummy"></div>
+		</div>
+		<div id="blankSpace">
+			<div class="apsectKepperDummy"></div>
+		</div>
+		<div class="foundation spade">
+			<div class="apsectKepperDummy">
+				<div class="center">&#9824;</div>
+			</div>
+		</div>
+		<div class="foundation heart">
+			<div class="apsectKepperDummy">
+				<div class="center">&#9829;</div>
+			</div>
+		</div>
+		<div class="foundation club">
+			<div class="apsectKepperDummy">
+				<div class="center">&#9827;</div>
+			</div>
+		</div>
+		<div class="foundation diamond">
+			<div class="apsectKepperDummy">
+				<div class="center">&#9830;</div>
+			</div>
+		</div>
 	</div>
-	
-	<img src="cards/ace_of_spades.svg">
-		<img src="cards/ace_of_clubs.svg">
-		<img src="cards/2_of_hearts.svg">
-<script>
-	var card = document.getElementById("card");
-	var r1 = document.getElementById("row1");
-	var r2 = document.getElementById("row2");
+	<div id="tableauRow" class="gameRow">
+		<div class="tableau">
+			<div class="apsectKepperDummy"></div>
+		</div>
+		<div class="tableau">
+			<div class="apsectKepperDummy"></div>
+		</div>
+		<div class="tableau">
+			<div class="apsectKepperDummy"></div>
+		</div>
+		<div class="tableau">
+			<div class="apsectKepperDummy"></div>
+		</div>
+		<div class="tableau">
+			<div class="apsectKepperDummy"></div>
+		</div>
+		<div class="tableau">
+			<div class="apsectKepperDummy"></div>
+		</div>
+		<div class="tableau">
+			<div class="apsectKepperDummy"></div>
+		</div>
+	</div>
+	<div id="winAnnouncement">
+		<span class="smiley">&#9787;</span> YOU WIN !! <span class="smiley">&#9787;</span>
+	</div>
 
-	function handleDragStart(e) {
-		// Target (this) element is the source node.
-
-		e.dataTransfer.effectAllowed = 'move';
-		e.dataTransfer.setData('text/html', this);
-		console.log(this);
-	}
-
-	function handleDragOverEnter(e) {
-		    if (e.preventDefault) e.preventDefault(); // allows us to drop
-		    return false;
-		  }
-
-	  
-	function handleDrop(e) {
-		// this/e.target is current target element.
-		console.log("here");
-		if (e.preventDefault) e.preventDefault(); 
-		if (e.stopPropagation) {
-			e.stopPropagation(); // Stops some browsers from redirecting.
-		}
-		var ch = e.dataTransfer.getData('text/html');
-		console.log(ch);
-		this.appendChild(ch);
-		return false;
-	}
-
-	card.addEventListener('dragstart', handleDragStart, false);
-	r1.addEventListener('drop', handleDrop, false);
-	r1.addEventListener('dragover',handleDragOverEnter,false);
-	r1.addEventListener('dragenter',handleDragOverEnter,false);
-	r2.addEventListener('drop', handleDrop, false);
-	r2.addEventListener('dragover',handleDragOverEnter,false);
-	r2.addEventListener('dragenter',handleDragOverEnter,false);
-
+	<script>
+		newGame();
 	</script>
 
 </body>
