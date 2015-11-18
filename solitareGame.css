@@ -1,0 +1,198 @@
+/**********************
+* game table layout
+**********************/
+.table {
+	font-size: 15px;
+	background: ForestGreen;
+	overflow: auto;
+	white-space: nowrap;
+}
+
+.deck {
+	display:none;
+}
+
+.foundation, .tableau, #stock, #waste, #blankSpace {
+	display: inline-block;
+	position: relative;
+}
+
+.foundation, .tableau, #stock, #waste {
+	border-style: solid;
+	border-width: .1em;
+	border-color: lightgreen;
+}
+
+#blankSpace {
+	visibility: hidden;
+	margin: .05em;
+}
+
+.foundation .center {
+	opacity: .3;
+	font-size: 5em;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	line-height: 1.875em; /* 5em * 155% / 4   */
+	text-align: center;
+}
+/**********************
+* card position 
+* relative to each other 
+* when played
+**********************/
+.card {
+	display: inline-block;
+	position: relative;
+}
+
+.foundation>.card, .tableau>.card, #stock>.card, #waste>.card, .card>.card
+	{
+	position: absolute;
+	margin-top: -155%; /* calculated from parent width */
+}
+
+.tableau .card>.card {
+	position: absolute;
+	/* give it a nice fanned apperance */
+	margin-top: -110%; /* calculated from parent width */
+}
+
+/**********************
+* controls size and 
+* shape of the cards, 
+* the tableau slots, 
+* and the foundation
+* slots
+**********************/
+.card, .foundation, .tableau, #stock, #waste, #blankSpace {
+	width: 5em;
+}
+
+.apsectKepperDummy {
+	/* padding-top is computed relative to the parent width
+			so this keeps the given aspect ratio */
+	/* standard card size: 2-1/4" x 3-1/2"
+			-> 9:14 -> 1:1.555555556*/
+	padding-top: 155%;
+}
+
+/**********************
+* layout, color and 
+* decoration of the 
+* cards
+**********************/
+.spade, .club {
+	color: black;
+}
+
+.heart, .diamond {
+	color: red;
+}
+
+.cardFace, .cardBack {
+	/* make div fill up dummy parent */
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	/* card edges */
+	border-style: solid;
+	border-width: .1em;
+	border-color: black;
+	border-radius: .4em
+}
+
+.cardFace {
+	visibility: hidden; /* all cards are initially face down*/
+	background-color: white;
+}
+
+.cardBack {
+	background-color: Azure;
+}
+
+.topCorner, .bottomCorner {
+	letter-spacing: 0;
+	text-align: center;
+}
+
+.topCorner {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.bottomCorner {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+.cardMarks { /* center pip area */
+	position: absolute;
+	top: 1em;
+	bottom: 1em;
+	left: 1em;
+	right: 1em;
+	border-style: solid;
+	border-width: .1em;
+	border-color: black;
+	text-align: center;
+}
+
+.pips {
+	text-align: center;
+	line-height: 60%;
+}
+
+.faceCardFace {
+	position: relative;
+	font-size: 3em;
+	display: inline;
+	line-height: 1.75em;
+}
+
+.cardBackCenter {
+	border-style: none;
+	border-width: .5em;
+	border-radius: .3em;
+	background: RoyalBlue;
+	position: absolute;
+	top: .5em;
+	bottom: .5em;
+	left: .5em;
+	right: .5em;
+}
+
+.cardBackCenterSymble {
+	color: DarkBlue;
+	font-size: 4.5em;
+}
+
+/***********************
+* extra formats
+************************/
+#winAnnouncement {
+	display: inline;
+	visibility: hidden;
+	border-style: solid;
+	border-width: .1em;
+	border-radius: .3em;
+	border-color: gold;
+	font-size: 400%;
+	color: white;
+	background: #444444;
+	position: relative;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+.smiley {
+	color: gold;
+}
